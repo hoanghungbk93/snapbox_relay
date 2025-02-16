@@ -821,15 +821,32 @@ _processCommand:
 _main:
 ;	hello.c:164: unsigned char commandIndex = 0;
 	mov	r7,#0x00
+;	hello.c:168: setPortMode(3,2,1);		//this should make bit 3 on P3 a push pull output
+	mov	_setPortMode_PARM_2,#0x02
+	mov	_setPortMode_PARM_3,#0x01
+	mov	dpl, #0x03
+	push	ar7
+	lcall	_setPortMode
+;	hello.c:169: setPortMode(3,3,1);		//this should make bit 4 on P3 a push pull output
+	mov	_setPortMode_PARM_2,#0x03
+	mov	_setPortMode_PARM_3,#0x01
+	mov	dpl, #0x03
+	lcall	_setPortMode
+;	hello.c:170: setPortMode(3,5,1);		//this should make bit 5 on P3 a push pull output
+	mov	_setPortMode_PARM_2,#0x05
+	mov	_setPortMode_PARM_3,#0x01
+	mov	dpl, #0x03
+	lcall	_setPortMode
+	pop	ar7
 ;	hello.c:172: led = 0;
 ;	assignBit
 	clr	_P3_4
-;	hello.c:181: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
+;	hello.c:176: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
 00115$:
 	mov	r5,#0x60
 	mov	r6,#0x09
 00108$:
-;	hello.c:183: Delay2400();
+;	hello.c:178: Delay2400();
 	push	ar7
 	push	ar6
 	push	ar5
@@ -837,7 +854,7 @@ _main:
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	hello.c:181: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
+;	hello.c:176: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
 	dec	r5
 	cjne	r5,#0xff,00139$
 	dec	r6
@@ -845,27 +862,13 @@ _main:
 	mov	a,r5
 	orl	a,r6
 	jnz	00108$
-;	hello.c:185: led = !led;	//toggle led
+;	hello.c:180: led = !led;	//toggle led
 	cpl	_P3_4
-;	hello.c:186: sendChar('H');
-	mov	dpl, #0x48
-	push	ar7
-	lcall	_sendChar
-;	hello.c:187: sendChar('I');
-	mov	dpl, #0x49
-	lcall	_sendChar
-;	hello.c:188: sendChar(13);
-	mov	dpl, #0x0d
-	lcall	_sendChar
-;	hello.c:189: sendChar(10);
-	mov	dpl, #0x0a
-	lcall	_sendChar
-	pop	ar7
-;	hello.c:192: if (commandIndex < 8) {
+;	hello.c:183: if (commandIndex < 8) {
 	cjne	r7,#0x08,00141$
 00141$:
 	jnc	00103$
-;	hello.c:193: command[commandIndex++] = receiveChar();
+;	hello.c:184: command[commandIndex++] = receiveChar();
 	mov	ar6,r7
 	inc	r7
 	mov	a,r6
@@ -880,13 +883,13 @@ _main:
 	mov	@r1,a
 	sjmp	00115$
 00103$:
-;	hello.c:195: processCommand(command);
+;	hello.c:186: processCommand(command);
 	mov	dptr,#_main_command_10000_27
 	mov	b, #0x40
 	lcall	_processCommand
-;	hello.c:196: commandIndex = 0; // Reset for next command
+;	hello.c:187: commandIndex = 0; // Reset for next command
 	mov	r7,#0x00
-;	hello.c:199: }	  
+;	hello.c:190: }	  
 	sjmp	00115$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

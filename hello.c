@@ -165,16 +165,11 @@ void main()
 	
 	
 	// commented out so pins are default mode 0
-	//setPortMode(3,3,1);		//this should make bit 3 on P3 a push pull output
-	//setPortMode(3,4,1);		//this should make bit 4 on P3 a push pull output
-	//setPortMode(3,5,1);		//this should make bit 5 on P3 a push pull output
+	setPortMode(3,2,1);		//this should make bit 3 on P3 a push pull output
+	setPortMode(3,3,1);		//this should make bit 4 on P3 a push pull output
+	setPortMode(3,5,1);		//this should make bit 5 on P3 a push pull output
 	
 	led = 0;
-
-	// sendChar('H');
-	// sendChar('I');
-	// sendChar(13);
-	// sendChar(10);
 	
     while(1)
     {
@@ -183,10 +178,6 @@ void main()
 			Delay2400();
 		}
 		led = !led;	//toggle led
-		sendChar('H');
-		sendChar('I');
-		sendChar(13);
-		sendChar(10);
 
         // Receive command
         if (commandIndex < 8) {

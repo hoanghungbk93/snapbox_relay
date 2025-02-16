@@ -80,9 +80,9 @@ C:   000000A5  s_GSFINAL
 C:   000000A5  s_GSINIT                        
 C:   000000A5  s_GSINIT5                       
 C:   000000A8  s_CSEG                          
-C:   000001F9  l_CSEG                          
-C:   000002A1  s_CONST                         
-C:   000002A1  s_XINIT                         
+C:   00000205  l_CSEG                          
+C:   000002AD  s_CONST                         
+C:   000002AD  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -349,7 +349,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000A8    000001F9 =         505. bytes (REL,CON,CODE)
+CSEG                                000000A8    00000205 =         517. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -360,8 +360,8 @@ C:   00000151  _sendCRLF                          hello
 C:   0000015D  _receiveChar                       hello
 C:   0000019A  _processCommand                    hello
 C:   0000021A  _main                              hello
-C:   00000281  __gptrget                          _gptrget
-C:   0000029D  ___sdcc_external_startup           _startup
+C:   0000028D  __gptrget                          _gptrget
+C:   000002A9  ___sdcc_external_startup           _startup
 ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
 
 Files Linked                              [ module(s) ]

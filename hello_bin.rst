@@ -694,7 +694,7 @@
       00019A AD 82            [24]  694 	mov	r5,dpl
       00019C AE 83            [24]  695 	mov	r6,dph
       00019E AF F0            [24]  696 	mov	r7,b
-      0001A0 12 02 81         [24]  697 	lcall	__gptrget
+      0001A0 12 02 8D         [24]  697 	lcall	__gptrget
       0001A3 FC               [12]  698 	mov	r4,a
       0001A4 BC 55 02         [24]  699 	cjne	r4,#0x55,00179$
       0001A7 80 01            [24]  700 	sjmp	00180$
@@ -711,7 +711,7 @@
       0001B3 8A 82            [24]  711 	mov	dpl,r2
       0001B5 8B 83            [24]  712 	mov	dph,r3
       0001B7 8C F0            [24]  713 	mov	b,r4
-      0001B9 12 02 81         [24]  714 	lcall	__gptrget
+      0001B9 12 02 8D         [24]  714 	lcall	__gptrget
       0001BC FA               [12]  715 	mov	r2,a
       0001BD BA 56 59         [24]  716 	cjne	r2,#0x56,00117$
                                     717 ;	hello.c:127: unsigned char channel = command[5];
@@ -725,7 +725,7 @@
       0001C9 8A 82            [24]  725 	mov	dpl,r2
       0001CB 8B 83            [24]  726 	mov	dph,r3
       0001CD 8C F0            [24]  727 	mov	b,r4
-      0001CF 12 02 81         [24]  728 	lcall	__gptrget
+      0001CF 12 02 8D         [24]  728 	lcall	__gptrget
       0001D2 FC               [12]  729 	mov	r4,a
                                     730 ;	hello.c:128: unsigned char action = command[6];
       0001D3 74 06            [12]  731 	mov	a,#0x06
@@ -737,7 +737,7 @@
       0001DA 8D 82            [24]  737 	mov	dpl,r5
       0001DC 8E 83            [24]  738 	mov	dph,r6
       0001DE 8F F0            [24]  739 	mov	b,r7
-      0001E0 12 02 81         [24]  740 	lcall	__gptrget
+      0001E0 12 02 8D         [24]  740 	lcall	__gptrget
       0001E3 FF               [12]  741 	mov	r7,a
                                     742 ;	hello.c:130: if (action == 0x01) { // Open relay
       0001E4 BF 01 18         [24]  743 	cjne	r7,#0x01,00112$
@@ -821,74 +821,77 @@
       00021A                        821 _main:
                                     822 ;	hello.c:164: unsigned char commandIndex = 0;
       00021A 7F 00            [12]  823 	mov	r7,#0x00
-                                    824 ;	hello.c:172: led = 0;
-                                    825 ;	assignBit
-      00021C C2 B4            [12]  826 	clr	_P3_4
-                                    827 ;	hello.c:181: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
-      00021E                        828 00115$:
-      00021E 7D 60            [12]  829 	mov	r5,#0x60
-      000220 7E 09            [12]  830 	mov	r6,#0x09
-      000222                        831 00108$:
-                                    832 ;	hello.c:183: Delay2400();
-      000222 C0 07            [24]  833 	push	ar7
-      000224 C0 06            [24]  834 	push	ar6
-      000226 C0 05            [24]  835 	push	ar5
-      000228 12 00 FE         [24]  836 	lcall	_Delay2400
-      00022B D0 05            [24]  837 	pop	ar5
-      00022D D0 06            [24]  838 	pop	ar6
-      00022F D0 07            [24]  839 	pop	ar7
-                                    840 ;	hello.c:181: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
-      000231 1D               [12]  841 	dec	r5
-      000232 BD FF 01         [24]  842 	cjne	r5,#0xff,00139$
-      000235 1E               [12]  843 	dec	r6
-      000236                        844 00139$:
-      000236 ED               [12]  845 	mov	a,r5
-      000237 4E               [12]  846 	orl	a,r6
-      000238 70 E8            [24]  847 	jnz	00108$
-                                    848 ;	hello.c:185: led = !led;	//toggle led
-      00023A B2 B4            [12]  849 	cpl	_P3_4
-                                    850 ;	hello.c:186: sendChar('H');
-      00023C 75 82 48         [24]  851 	mov	dpl, #0x48
-      00023F C0 07            [24]  852 	push	ar7
-      000241 12 01 13         [24]  853 	lcall	_sendChar
-                                    854 ;	hello.c:187: sendChar('I');
-      000244 75 82 49         [24]  855 	mov	dpl, #0x49
-      000247 12 01 13         [24]  856 	lcall	_sendChar
-                                    857 ;	hello.c:188: sendChar(13);
-      00024A 75 82 0D         [24]  858 	mov	dpl, #0x0d
-      00024D 12 01 13         [24]  859 	lcall	_sendChar
-                                    860 ;	hello.c:189: sendChar(10);
-      000250 75 82 0A         [24]  861 	mov	dpl, #0x0a
-      000253 12 01 13         [24]  862 	lcall	_sendChar
-      000256 D0 07            [24]  863 	pop	ar7
-                                    864 ;	hello.c:192: if (commandIndex < 8) {
-      000258 BF 08 00         [24]  865 	cjne	r7,#0x08,00141$
-      00025B                        866 00141$:
-      00025B 50 17            [24]  867 	jnc	00103$
-                                    868 ;	hello.c:193: command[commandIndex++] = receiveChar();
-      00025D 8F 06            [24]  869 	mov	ar6,r7
-      00025F 0F               [12]  870 	inc	r7
-      000260 EE               [12]  871 	mov	a,r6
-      000261 24 08            [12]  872 	add	a, #_main_command_10000_27
-      000263 F9               [12]  873 	mov	r1,a
-      000264 C0 07            [24]  874 	push	ar7
-      000266 C0 01            [24]  875 	push	ar1
-      000268 12 01 5D         [24]  876 	lcall	_receiveChar
-      00026B E5 82            [12]  877 	mov	a, dpl
-      00026D D0 01            [24]  878 	pop	ar1
-      00026F D0 07            [24]  879 	pop	ar7
-      000271 F7               [12]  880 	mov	@r1,a
-      000272 80 AA            [24]  881 	sjmp	00115$
-      000274                        882 00103$:
-                                    883 ;	hello.c:195: processCommand(command);
-      000274 90 00 08         [24]  884 	mov	dptr,#_main_command_10000_27
-      000277 75 F0 40         [24]  885 	mov	b, #0x40
-      00027A 12 01 9A         [24]  886 	lcall	_processCommand
-                                    887 ;	hello.c:196: commandIndex = 0; // Reset for next command
-      00027D 7F 00            [12]  888 	mov	r7,#0x00
-                                    889 ;	hello.c:199: }	  
-      00027F 80 9D            [24]  890 	sjmp	00115$
-                                    891 	.area CSEG    (CODE)
-                                    892 	.area CONST   (CODE)
-                                    893 	.area XINIT   (CODE)
-                                    894 	.area CABS    (ABS,CODE)
+                                    824 ;	hello.c:168: setPortMode(3,2,1);		//this should make bit 3 on P3 a push pull output
+      00021C 75 10 02         [24]  825 	mov	_setPortMode_PARM_2,#0x02
+      00021F 75 11 01         [24]  826 	mov	_setPortMode_PARM_3,#0x01
+      000222 75 82 03         [24]  827 	mov	dpl, #0x03
+      000225 C0 07            [24]  828 	push	ar7
+      000227 12 00 A8         [24]  829 	lcall	_setPortMode
+                                    830 ;	hello.c:169: setPortMode(3,3,1);		//this should make bit 4 on P3 a push pull output
+      00022A 75 10 03         [24]  831 	mov	_setPortMode_PARM_2,#0x03
+      00022D 75 11 01         [24]  832 	mov	_setPortMode_PARM_3,#0x01
+      000230 75 82 03         [24]  833 	mov	dpl, #0x03
+      000233 12 00 A8         [24]  834 	lcall	_setPortMode
+                                    835 ;	hello.c:170: setPortMode(3,5,1);		//this should make bit 5 on P3 a push pull output
+      000236 75 10 05         [24]  836 	mov	_setPortMode_PARM_2,#0x05
+      000239 75 11 01         [24]  837 	mov	_setPortMode_PARM_3,#0x01
+      00023C 75 82 03         [24]  838 	mov	dpl, #0x03
+      00023F 12 00 A8         [24]  839 	lcall	_setPortMode
+      000242 D0 07            [24]  840 	pop	ar7
+                                    841 ;	hello.c:172: led = 0;
+                                    842 ;	assignBit
+      000244 C2 B4            [12]  843 	clr	_P3_4
+                                    844 ;	hello.c:176: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
+      000246                        845 00115$:
+      000246 7D 60            [12]  846 	mov	r5,#0x60
+      000248 7E 09            [12]  847 	mov	r6,#0x09
+      00024A                        848 00108$:
+                                    849 ;	hello.c:178: Delay2400();
+      00024A C0 07            [24]  850 	push	ar7
+      00024C C0 06            [24]  851 	push	ar6
+      00024E C0 05            [24]  852 	push	ar5
+      000250 12 00 FE         [24]  853 	lcall	_Delay2400
+      000253 D0 05            [24]  854 	pop	ar5
+      000255 D0 06            [24]  855 	pop	ar6
+      000257 D0 07            [24]  856 	pop	ar7
+                                    857 ;	hello.c:176: for(delayCtr = 2400;delayCtr > 0;delayCtr--)	//wait 1 second
+      000259 1D               [12]  858 	dec	r5
+      00025A BD FF 01         [24]  859 	cjne	r5,#0xff,00139$
+      00025D 1E               [12]  860 	dec	r6
+      00025E                        861 00139$:
+      00025E ED               [12]  862 	mov	a,r5
+      00025F 4E               [12]  863 	orl	a,r6
+      000260 70 E8            [24]  864 	jnz	00108$
+                                    865 ;	hello.c:180: led = !led;	//toggle led
+      000262 B2 B4            [12]  866 	cpl	_P3_4
+                                    867 ;	hello.c:183: if (commandIndex < 8) {
+      000264 BF 08 00         [24]  868 	cjne	r7,#0x08,00141$
+      000267                        869 00141$:
+      000267 50 17            [24]  870 	jnc	00103$
+                                    871 ;	hello.c:184: command[commandIndex++] = receiveChar();
+      000269 8F 06            [24]  872 	mov	ar6,r7
+      00026B 0F               [12]  873 	inc	r7
+      00026C EE               [12]  874 	mov	a,r6
+      00026D 24 08            [12]  875 	add	a, #_main_command_10000_27
+      00026F F9               [12]  876 	mov	r1,a
+      000270 C0 07            [24]  877 	push	ar7
+      000272 C0 01            [24]  878 	push	ar1
+      000274 12 01 5D         [24]  879 	lcall	_receiveChar
+      000277 E5 82            [12]  880 	mov	a, dpl
+      000279 D0 01            [24]  881 	pop	ar1
+      00027B D0 07            [24]  882 	pop	ar7
+      00027D F7               [12]  883 	mov	@r1,a
+      00027E 80 C6            [24]  884 	sjmp	00115$
+      000280                        885 00103$:
+                                    886 ;	hello.c:186: processCommand(command);
+      000280 90 00 08         [24]  887 	mov	dptr,#_main_command_10000_27
+      000283 75 F0 40         [24]  888 	mov	b, #0x40
+      000286 12 01 9A         [24]  889 	lcall	_processCommand
+                                    890 ;	hello.c:187: commandIndex = 0; // Reset for next command
+      000289 7F 00            [12]  891 	mov	r7,#0x00
+                                    892 ;	hello.c:190: }	  
+      00028B 80 B9            [24]  893 	sjmp	00115$
+                                    894 	.area CSEG    (CODE)
+                                    895 	.area CONST   (CODE)
+                                    896 	.area XINIT   (CODE)
+                                    897 	.area CABS    (ABS,CODE)
